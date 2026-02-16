@@ -1,10 +1,6 @@
 // Scorekeeper Application with Swipe Gestures
 class ScoreKeeper {
     constructor() {
-        // Initialize scores
-        this.leftScore = 0;
-        this.rightScore = 0;
-
         // Touch tracking
         this.touchStartY = 0;
         this.touchEndY = 0;
@@ -20,8 +16,31 @@ class ScoreKeeper {
         this.modalCancel = document.getElementById('modal-cancel');
         this.modalConfirm = document.getElementById('modal-confirm');
 
+        // Load scores from localStorage or initialize to 0
+        this.loadScores();
+
         // Bind event listeners
         this.setupEventListeners();
+    }
+
+    loadScores() {
+        // Try to load scores from localStorage
+        const savedLeftScore = localStorage.getItem('leftScore');
+        const savedRightScore = localStorage.getItem('rightScore');
+
+        // Use saved scores if they exist, otherwise default to 0
+        this.leftScore = savedLeftScore !== null ? parseInt(savedLeftScore, 10) : 0;
+        this.rightScore = savedRightScore !== null ? parseInt(savedRightScore, 10) : 0;
+
+        // Update displays with loaded scores
+        this.leftScoreDisplay.textContent = this.leftScore;
+        this.rightScoreDisplay.textContent = this.rightScore;
+    }
+
+    saveScores() {
+        // Save current scores to localStorage
+        localStorage.setItem('leftScore', this.leftScore.toString());
+        localStorage.setItem('rightScore', this.rightScore.toString());
     }
 
     setupEventListeners() {
@@ -130,6 +149,8 @@ class ScoreKeeper {
             this.rightScoreDisplay.textContent = this.rightScore;
             this.animateScore(this.rightScoreDisplay);
         }
+        // Save scores to localStorage after each update
+        this.saveScores();
     }
 
     animateScore(element) {
@@ -152,6 +173,8 @@ class ScoreKeeper {
         this.rightScore = 0;
         this.leftScoreDisplay.textContent = '0';
         this.rightScoreDisplay.textContent = '0';
+        // Save reset scores to localStorage
+        this.saveScores();
         this.hideResetModal();
     }
 }
