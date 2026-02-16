@@ -66,8 +66,11 @@ class ScoreKeeper {
         // Fullscreen button
         this.fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
 
-        // Listen for fullscreen changes to update button icon
+        // Listen for fullscreen changes to update button icon (with vendor prefixes)
         document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
+        document.addEventListener('webkitfullscreenchange', () => this.updateFullscreenButton());
+        document.addEventListener('mozfullscreenchange', () => this.updateFullscreenButton());
+        document.addEventListener('msfullscreenchange', () => this.updateFullscreenButton());
 
         // Modal buttons
         this.modalCancel.addEventListener('click', () => this.hideResetModal());
@@ -186,20 +189,53 @@ class ScoreKeeper {
     }
 
     toggleFullscreen() {
-        if (!document.fullscreenElement) {
-            // Enter fullscreen
-            document.documentElement.requestFullscreen().catch(err => {
-                console.error('Error attempting to enable fullscreen:', err);
-            });
+        const elem = document.documentElement;
+
+        // Check if currently in fullscreen (with vendor prefixes)
+        const isFullscreen = document.fullscreenElement ||
+                            document.webkitFullscreenElement ||
+                            document.mozFullScreenElement ||
+                            document.msFullscreenElement;
+
+        if (!isFullscreen) {
+            // Enter fullscreen with vendor prefixes for mobile support
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(err => {
+                    console.error('Error attempting to enable fullscreen:', err);
+                });
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.webkitEnterFullscreen) {
+                elem.webkitEnterFullscreen();
+            } else if (elem.mozRequestFullScreen) {
+                elem.mozRequestFullScreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            } else {
+                alert('Fullscreen mode is not supported on this device');
+            }
         } else {
-            // Exit fullscreen
-            document.exitFullscreen();
+            // Exit fullscreen with vendor prefixes
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
         }
     }
 
     updateFullscreenButton() {
-        // Update button icon based on fullscreen state
-        if (document.fullscreenElement) {
+        // Update button icon based on fullscreen state (with vendor prefixes)
+        const isFullscreen = document.fullscreenElement ||
+                            document.webkitFullscreenElement ||
+                            document.mozFullScreenElement ||
+                            document.msFullscreenElement;
+
+        if (isFullscreen) {
             this.fullscreenBtn.textContent = '⛶'; // Exit fullscreen icon
         } else {
             this.fullscreenBtn.textContent = '⛶'; // Enter fullscreen icon
