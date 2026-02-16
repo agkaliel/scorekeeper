@@ -20,6 +20,8 @@ body {
 
 .panel {
     flex: 1;
+    min-width: 0;
+    max-width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,6 +31,7 @@ body {
     user-select: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
+    overflow: hidden;
 }
 
 .panel-left {
@@ -40,13 +43,17 @@ body {
 }
 
 .score {
-    font-size: clamp(150px, 60vw, 800px);
+    font-size: clamp(100px, 35vw, 600px);
     font-weight: bold;
     color: white;
     font-family: Tahoma, 'Trebuchet MS', 'Franklin Gothic Medium', sans-serif;
     user-select: none;
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: transform 0.1s ease;
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
 }
 
 .panel.swipe-active .score {
@@ -265,7 +272,7 @@ body {
 /* Mobile landscape optimization */
 @media (max-width: 768px) and (orientation: landscape) {
     .score {
-        font-size: clamp(120px, 60vh, 600px);
+        font-size: clamp(80px, 40vh, 400px);
     }
 
     .swipe-hint {
@@ -314,8 +321,13 @@ body {
         flex-direction: column;
     }
 
+    .panel {
+        max-width: 100%;
+        max-height: 50%;
+    }
+
     .score {
-        font-size: clamp(150px, 50vh, 600px);
+        font-size: clamp(100px, 30vh, 500px);
     }
 }
 
