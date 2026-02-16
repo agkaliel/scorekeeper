@@ -6,28 +6,237 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    touch-action: none; /* Prevent browser gestures */
+}
+
+.scorekeeper {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.panel-left {
+    background-color: #e74c3c;
+}
+
+.panel-right {
+    background-color: #3498db;
+}
+
+.score {
+    font-size: clamp(80px, 25vw, 300px);
+    font-weight: bold;
+    color: white;
+    font-family: 'Courier New', monospace;
+    user-select: none;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s ease;
+}
+
+.panel.swipe-active .score {
+    transform: scale(1.1);
+}
+
+.swipe-hint {
+    position: absolute;
+    bottom: 20%;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1rem;
+    text-align: center;
+    pointer-events: none;
+    animation: fadeInOut 3s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+}
+
+/* Reset Button */
+.reset-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    font-size: 1.8rem;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.container {
-    text-align: center;
+.reset-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    transform: rotate(180deg);
+}
+
+.reset-btn:active {
+    transform: scale(0.9) rotate(180deg);
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
     background: white;
-    padding: 3rem 4rem;
-    border-radius: 10px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
+    animation: modalSlideIn 0.3s ease;
 }
 
-h1 {
-    font-size: 3rem;
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal h2 {
     color: #333;
     margin-bottom: 1rem;
+    font-size: 1.8rem;
 }
 
-p {
-    font-size: 1.2rem;
+.modal p {
     color: #666;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-btn-cancel {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.modal-btn-cancel:hover {
+    background-color: #7f8c8d;
+}
+
+.modal-btn-confirm {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.modal-btn-confirm:hover {
+    background-color: #c0392b;
+}
+
+.modal-btn:active {
+    transform: scale(0.95);
+}
+
+/* Mobile landscape optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+    .score {
+        font-size: clamp(60px, 20vh, 200px);
+    }
+
+    .swipe-hint {
+        font-size: 0.8rem;
+        bottom: 10%;
+    }
+
+    .reset-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .modal {
+        padding: 1.5rem;
+        width: 300px;
+    }
+
+    .modal h2 {
+        font-size: 1.5rem;
+    }
+
+    .modal p {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Portrait mode - stack vertically */
+@media (orientation: portrait) {
+    .scorekeeper {
+        flex-direction: column;
+    }
+
+    .score {
+        font-size: clamp(80px, 20vh, 200px);
+    }
+}
+
+/* Desktop - hide swipe hints */
+@media (hover: hover) and (pointer: fine) {
+    .swipe-hint {
+        display: none;
+    }
 }

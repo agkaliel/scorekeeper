@@ -2,15 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Scorekeeper</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Hello World!</h1>
-        <p>Welcome to your static website.</p>
+    <div class="scorekeeper">
+        <!-- Left Panel (Red) - Swipe to change score -->
+        <div class="panel panel-left" id="left-panel" data-side="left">
+            <div class="score" id="left-score">0</div>
+            <div class="swipe-hint">Swipe up or down</div>
+        </div>
+
+        <!-- Right Panel (Blue) - Swipe to change score -->
+        <div class="panel panel-right" id="right-panel" data-side="right">
+            <div class="score" id="right-score">0</div>
+            <div class="swipe-hint">Swipe up or down</div>
+        </div>
     </div>
+
+    <!-- Reset Button -->
+    <button class="reset-btn" id="reset-btn" aria-label="Reset scores">↻</button>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <h2>Reset Scores?</h2>
+            <p>This will set both scores back to 0.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-cancel" id="modal-cancel">Cancel</button>
+                <button class="modal-btn modal-btn-confirm" id="modal-confirm">Reset</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/main.js"></script>
 </body>
 </html>
