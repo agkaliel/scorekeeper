@@ -20,6 +20,9 @@ class ScoreKeeper {
         // Load scores from localStorage or initialize to 0
         this.loadScores();
 
+        // Hide fullscreen button on iOS devices (not supported)
+        this.checkiOSAndHideFullscreen();
+
         // Bind event listeners
         this.setupEventListeners();
     }
@@ -42,6 +45,16 @@ class ScoreKeeper {
         // Save current scores to localStorage
         localStorage.setItem('leftScore', this.leftScore.toString());
         localStorage.setItem('rightScore', this.rightScore.toString());
+    }
+
+    checkiOSAndHideFullscreen() {
+        // Detect iOS devices (iPhone, iPad, iPod) using userAgent
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+        if (isIOS) {
+            // Hide fullscreen button on iOS since fullscreen API is not supported
+            this.fullscreenBtn.style.display = 'none';
+        }
     }
 
     setupEventListeners() {
