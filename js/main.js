@@ -12,6 +12,7 @@ class ScoreKeeper {
         this.leftPanel = document.getElementById('left-panel');
         this.rightPanel = document.getElementById('right-panel');
         this.resetBtn = document.getElementById('reset-btn');
+        this.fullscreenBtn = document.getElementById('fullscreen-btn');
         this.modalOverlay = document.getElementById('modal-overlay');
         this.modalCancel = document.getElementById('modal-cancel');
         this.modalConfirm = document.getElementById('modal-confirm');
@@ -61,6 +62,12 @@ class ScoreKeeper {
 
         // Reset button
         this.resetBtn.addEventListener('click', () => this.showResetModal());
+
+        // Fullscreen button
+        this.fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+
+        // Listen for fullscreen changes to update button icon
+        document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
 
         // Modal buttons
         this.modalCancel.addEventListener('click', () => this.hideResetModal());
@@ -176,6 +183,27 @@ class ScoreKeeper {
         // Save reset scores to localStorage
         this.saveScores();
         this.hideResetModal();
+    }
+
+    toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            // Enter fullscreen
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error('Error attempting to enable fullscreen:', err);
+            });
+        } else {
+            // Exit fullscreen
+            document.exitFullscreen();
+        }
+    }
+
+    updateFullscreenButton() {
+        // Update button icon based on fullscreen state
+        if (document.fullscreenElement) {
+            this.fullscreenBtn.textContent = '⛶'; // Exit fullscreen icon
+        } else {
+            this.fullscreenBtn.textContent = '⛶'; // Enter fullscreen icon
+        }
     }
 }
 

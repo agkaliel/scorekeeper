@@ -40,10 +40,10 @@ body {
 }
 
 .score {
-    font-size: clamp(80px, 25vw, 300px);
+    font-size: clamp(150px, 60vw, 800px);
     font-weight: bold;
     color: white;
-    font-family: 'Courier New', monospace;
+    font-family: Tahoma, 'Trebuchet MS', 'Franklin Gothic Medium', sans-serif;
     user-select: none;
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: transform 0.1s ease;
@@ -72,7 +72,7 @@ body {
 .reset-btn {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    left: 20px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -96,6 +96,36 @@ body {
 
 .reset-btn:active {
     transform: scale(0.9) rotate(180deg);
+}
+
+/* Fullscreen Button */
+.fullscreen-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.fullscreen-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    transform: scale(1.1);
+}
+
+.fullscreen-btn:active {
+    transform: scale(0.9);
 }
 
 /* Modal */
@@ -192,7 +222,7 @@ body {
 /* Mobile landscape optimization */
 @media (max-width: 768px) and (orientation: landscape) {
     .score {
-        font-size: clamp(60px, 20vh, 200px);
+        font-size: clamp(120px, 60vh, 600px);
     }
 
     .swipe-hint {
@@ -204,6 +234,14 @@ body {
         width: 40px;
         height: 40px;
         font-size: 1.5rem;
+        bottom: 15px;
+        left: 15px;
+    }
+
+    .fullscreen-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
         bottom: 15px;
         right: 15px;
     }
@@ -230,7 +268,7 @@ body {
     }
 
     .score {
-        font-size: clamp(80px, 20vh, 200px);
+        font-size: clamp(150px, 50vh, 600px);
     }
 }
 
